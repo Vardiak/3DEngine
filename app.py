@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
  
-from tkinter import * 
+import tkinter
 
-width = 500
-height = 500
+width = 1280
+height = 720
 
 class Camera:
     x = 0
@@ -12,18 +12,18 @@ class Camera:
     z = -5
 
 camera = Camera()
-window = Tk()
-canvas = Canvas(window, width=width, height=height, background='white')
+window = tkinter.Tk()
+canvas = tkinter.Canvas(window, width=width, height=height, background='white')
 
 points = [
-    [-1, -1, -1],
-    [-1, 1, -1],
-    [1, -1, -1],
-    [1, 1, -1],
-    [-1, -1, 1],
-    [-1, 1, 1],
-    [1, -1, 1],
-    [1, 1, 1]
+    (-1, -1, -1),
+    (-1, 1, -1),
+    (1, -1, -1),
+    (1, 1, -1),
+    (-1, -1, 1),
+    (-1, 1, 1),
+    (1, -1, 1),
+    (1, 1, 1)
 ]
 
 faces = [
@@ -33,29 +33,38 @@ faces = [
     [5, 6, 7]
 ]
 
-for face in faces:
+def render():
+    canvas.delete('all')
 
-    coords = [];
+    for face in faces:
 
-    for pointId in face:
+        coords = [];
 
-        point = points[pointId]
+        for pointId in face:
 
-        x = point[0] - camera.x
-        y = point[1] - camera.y
-        z = point[2] - camera.z
+            (x, y, z) = points[pointId]
 
-        f = (width / 2) / z
+            x -= camera.x
+            y -= camera.y
+            z -= camera.z
 
-        x = x * f + (width / 2)
-        y = y * f + (width / 2)
-        coords.append((x, y))
+            f = (height / 2) / z
 
-    print(coords)
-    
-    canvas.create_line(coords[0] + coords[1])
-    canvas.create_line(coords[1] + coords[2])
-    canvas.create_line(coords[2] + coords[0])
+            x = x * f + (width / 2)
+            y = y * f + (height / 2)
+            coords.append((x, y))
+
+        print(coords)
+
+        for i in range(len(coords)):
+
+            if i + 1 < len(coords):
+                canvas.create_line(coords[i] + coords[i + 1])
+            else:
+                canvas.create_line(coords[i] + coords[0])
+
+
+render();
 
 
 canvas.pack()
