@@ -11,6 +11,10 @@ class Camera:
     x = 0
     y = 2
     z = -5
+    zPressed = False
+    qPressed = False
+    sPressed = False
+    dPressed = False
 
 class Engine:
 
@@ -22,31 +26,12 @@ class Engine:
 
         self.root = tkinter.Tk()
         self.canvas = tkinter.Canvas(self.root, width=width, height=height, background='white')
+        self.canvas.bind("<KeyPress>", self.onKeyPress)
+        self.canvas.bind("<KeyRelease>", self.onKeyRelease)
 
-        # temporary
-        self.points = [
-            (-1, -1, -1),
-            (-1, 1, -1),
-            (1, -1, -1),
-            (1, 1, -1),
-            (-1, -1, 1),
-            (-1, 1, 1),
-            (1, -1, 1),
-            (1, 1, 1)
-        ]
+        self.canvas.pack()
+        self.canvas.focus_set()
 
-        self.faces = [
-            [0, 1, 3, 2],
-            [4, 5, 7, 6],
-            [1, 5, 4, 0],
-            [2, 3, 7, 6]
-
-
-            # [0, 1, 2],
-            # [1, 2, 3],
-            # [4, 5, 6],
-            # [5, 6, 7]
-        ]
         self.map = Map()
         
         self.mainloop()
@@ -61,13 +46,12 @@ class Engine:
             
             start = time.clock()
 
-            # Display frame
+            # Display frames
             self.root.update()
 
             # Render next frame
             self.render()
             self.canvas.create_text(10, 10, anchor=tkinter.NW, font="Roboto\ Mono 20", text=str(fps) + " FPS")
-            self.canvas.pack()
 
             # Next frame planification for stable refresh rate
             renderingTime = time.clock() - start
@@ -81,13 +65,22 @@ class Engine:
                 fps = self.targetFPS / (time.clock() - cycleStart)
                 cycleStart = time.clock()
 
-            self.cam.x += 0.05
-            self.cam.y += 0.05
-
-
 
     def render(self):
         self.canvas.delete('all')
+
+        if (self.cam.zPressed):
+            self.cam.z += 0.05
+
+        if (self.cam.qPressed):
+            self.cam.x -= 0.05
+
+        if (self.cam.sPressed):
+            self.cam.z -= 0.05
+
+        if (self.cam.dPressed):
+            self.cam.x += 0.05
+
 
         for face in self.map.render():
 
@@ -104,8 +97,7 @@ class Engine:
 
 
                 # Projection
-                f = 1 / z
-                f = (self.width / 2) / z
+                f = (self.width / 2) / (z + 0.01)
 
                 x = x * f + (self.width / 2)
                 y = - y * f + (self.height / 2)
@@ -119,6 +111,35 @@ class Engine:
                     self.canvas.create_line(coords[i] + coords[i + 1])
                 else:
                     self.canvas.create_line(coords[i] + coords[0])
+
+    def onKeyPress(self, e):
+        print('coucou', e.keycode)
+
+        if (e.keycode == 90):
+            self.cam.zPressed = True
+        elif (e.keycode == 81):
+            self.cam.qPressed = True
+        elif (e.keycode == 83):
+            self.cam.sPressed = True
+        elif (e.keycode == 68):
+            self.cam.dPressed = True
+        elif (e.keycode == 32):
+            self.cam.y += 1
+        elif (e.keycode == 16):
+            self.cam.y -= 1
+
+    def onKeyRelease(self, e):
+        print('release', e.keycode)
+
+        if (e.keycode == 90):
+            self.cam.zPressed = False
+        elif (e.keycode == 81):
+            self.cam.qPressed = False
+        elif (e.keycode == 83):
+            self.cam.sPressed = False
+        elif (e.keycode == 68):
+            self.cam.dPressed = False
+
 
 
 
