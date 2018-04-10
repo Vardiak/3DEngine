@@ -6,15 +6,8 @@ import msvcrt
 import time
 import threading
 import math
-
-class Camera:
-    x = 0
-    y = 2
-    z = -5
-    zPressed = False
-    qPressed = False
-    sPressed = False
-    dPressed = False
+from Map import Map
+from Camera import Camera
 
 class Engine:
 
@@ -113,7 +106,6 @@ class Engine:
                     self.canvas.create_line(coords[i] + coords[0])
 
     def onKeyPress(self, e):
-        print('coucou', e.keycode)
 
         if (e.keycode == 90):
             self.cam.zPressed = True
@@ -129,7 +121,6 @@ class Engine:
             self.cam.y -= 1
 
     def onKeyRelease(self, e):
-        print('release', e.keycode)
 
         if (e.keycode == 90):
             self.cam.zPressed = False
@@ -141,53 +132,3 @@ class Engine:
             self.cam.dPressed = False
 
 
-
-
-class Map:
-
-    def __init__(self):
-        self.objects = []
-
-        for i in range(10):
-            for j in range(10):
-                for k in range(1):
-                    self.objects.append(Cube(i, j , k, 1))
-        self.results = []
-
-    def render(self):
-        if self.results:
-            return self.results
-
-        faces = []
-        for i in self.objects:
-            faces += i.render()
-
-        self.results = faces
-        return faces
-
-
-class Cube:
-
-    def __init__(self, x, y, z, size):
-        self.pos = (x, y, z)
-        self.size = size
-
-    def render(self):
-        (x, y, z) = self.pos
-        points = [
-            (x, y, z),
-            (x, y, z + self.size),
-            (x, y + self.size, z),
-            (x, y + self.size, z + self.size),
-            (x + self.size, y, z),
-            (x + self.size, y, z + self.size),
-            (x + self.size, y + self.size, z),
-            (x + self.size, y + self.size, z + self.size),
-        ]
-
-        return [
-            [points[0], points[1], points[3], points[2]],
-            [points[4], points[5], points[7], points[6]],
-            [points[3], points[7], points[5], points[1]],
-            [points[0], points[2], points[6], points[4]]
-        ]
