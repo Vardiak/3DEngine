@@ -5,8 +5,8 @@ class Map:
     def __init__(self):
         self.objects = []
 
-        for i in range(10):
-            for j in range(10):
+        for i in range(5):
+            for j in range(5):
                 for k in range(1):
                     self.objects.append(Cube(i, j , k, 1))
         self.results = []

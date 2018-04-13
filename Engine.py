@@ -6,8 +6,10 @@ import msvcrt
 import time
 import threading
 import math
+import utils
 from Map import Map
 from Camera import Camera
+
 
 class Engine:
 
@@ -51,7 +53,7 @@ class Engine:
             nextFrame = (1 / self.targetFPS) - renderingTime
             if (nextFrame > 0): time.sleep(nextFrame)
 
-            #Update refresh counter
+            # Update refresh counter
             frameCount += 1
             if (frameCount == self.targetFPS):
                 frameCount = 0
@@ -63,17 +65,29 @@ class Engine:
         self.canvas.delete('all')
 
         if (self.cam.zPressed):
-            self.cam.z += 0.05
+            self.cam.z += 0.05 * math.cos(self.cam.yaw)
+            self.cam.x += 0.05 * math.sin(self.cam.yaw)
 
         if (self.cam.qPressed):
-            self.cam.x -= 0.05
+            self.cam.x -= 0.05 * math.cos(self.cam.yaw)
+            self.cam.z += 0.05 * math.sin(self.cam.yaw)
 
         if (self.cam.sPressed):
-            self.cam.z -= 0.05
+            self.cam.z -= 0.05 * math.cos(self.cam.yaw)
+            self.cam.x -= 0.05 * math.sin(self.cam.yaw)
 
         if (self.cam.dPressed):
-            self.cam.x += 0.05
+            self.cam.x += 0.05 * math.cos(self.cam.yaw)
+            self.cam.z -= 0.05 * math.sin(self.cam.yaw)
 
+        if (self.cam.upPressed):
+            self.cam.pitch += 0.015
+        if (self.cam.downPressed):
+            self.cam.pitch -= 0.015
+        if (self.cam.leftPressed):
+            self.cam.yaw -= 0.015
+        if (self.cam.rightPressed):
+            self.cam.yaw += 0.015
 
         for face in self.map.render():
 
@@ -88,9 +102,15 @@ class Engine:
                 y -= self.cam.y
                 z -= self.cam.z
 
+                # Camera rotation
+                (x, z) = utils.rotate2D(x, z, self.cam.yaw)
+                (y, z) = utils.rotate2D(y, z, self.cam.pitch)
+
+                if z <= 0:
+                    break
 
                 # Projection
-                f = (self.width / 2) / (z + 0.01)
+                f = (self.width / 2) / z
 
                 x = x * f + (self.width / 2)
                 y = - y * f + (self.height / 2)
@@ -115,10 +135,19 @@ class Engine:
             self.cam.sPressed = True
         elif (e.keycode == 68):
             self.cam.dPressed = True
+        elif (e.keycode == 38):
+            self.cam.upPressed = True
+        elif (e.keycode == 40):
+            self.cam.downPressed = True
+        elif (e.keycode == 37):
+            self.cam.leftPressed = True
+        elif (e.keycode == 39):
+            self.cam.rightPressed = True
+
         elif (e.keycode == 32):
-            self.cam.y += 1
+            self.cam.y += .3
         elif (e.keycode == 16):
-            self.cam.y -= 1
+            self.cam.y -= .3
 
     def onKeyRelease(self, e):
 
@@ -130,5 +159,11 @@ class Engine:
             self.cam.sPressed = False
         elif (e.keycode == 68):
             self.cam.dPressed = False
-
-
+        elif (e.keycode == 38):
+            self.cam.upPressed = False
+        elif (e.keycode == 40):
+            self.cam.downPressed = False
+        elif (e.keycode == 37):
+            self.cam.leftPressed = False
+        elif (e.keycode == 39):
+            self.cam.rightPressed = False

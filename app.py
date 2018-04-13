@@ -3,4 +3,4 @@
 
 from Engine import Engine
 
-Engine(1280, 720, 30)
+Engine(1280, 720, 60)
