@@ -1,4 +1,4 @@
-class Cube:
+class Pyramide:
 
     def __init__(self, x, y, z, size):
         self.pos = (x, y, z)
