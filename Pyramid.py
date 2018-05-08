@@ -1,4 +1,4 @@
-class Pyramide:
+class Pyramid:
 
     def __init__(self, x, y, z, size):
         self.pos = (x, y, z)
@@ -9,7 +9,7 @@ class Pyramide:
         points = [
             (x, y, z),
             (x, y, z + self.size),
-            (x, y + self.size, z),
+            (x + (self.size / 2), y + self.size, z + (self.size / 2)),
             (x + self.size, y, z),
             (x + self.size, y, z + self.size),
       

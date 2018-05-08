@@ -1,4 +1,5 @@
 from Cube import Cube
+from Pyramid import Pyramid
 
 class Map:
 
@@ -8,7 +9,7 @@ class Map:
         for i in range(5):
             for j in range(5):
                 for k in range(1):
-                    self.objects.append(Cube(i, j , k, 1))
+                    self.objects.append(Pyramid(i, j , k, 1))
         self.results = []
 
     def render(self):
