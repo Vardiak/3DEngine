@@ -57,16 +57,22 @@ class Engine:
             frameCount += 1
             if (frameCount == self.targetFPS):
                 frameCount = 0
-                fps = self.targetFPS / (time.clock() - cycleStart)
+                fps = round(self.targetFPS / (time.clock() - cycleStart), 2)
                 cycleStart = time.clock()
 
 
     def render(self):
         self.canvas.delete('all')
+        # self.canvas.
 
+        # Handle keyboard input
         if (self.cam.zPressed):
             self.cam.z += 0.05 * math.cos(self.cam.yaw)
             self.cam.x += 0.05 * math.sin(self.cam.yaw)
+            # Uncomment for 3D orientation
+            # self.cam.z += 0.05 * math.cos(self.cam.yaw) * math.cos(self.cam.pitch)
+            # self.cam.x += 0.05 * math.sin(self.cam.yaw) * math.cos(self.cam.pitch)
+            # self.cam.y += 0.05 * math.sin(self.cam.pitch)
 
         if (self.cam.qPressed):
             self.cam.x -= 0.05 * math.cos(self.cam.yaw)
@@ -89,11 +95,14 @@ class Engine:
         if (self.cam.rightPressed):
             self.cam.yaw += 0.015
 
-        for face in self.map.render():
 
-            coords = []
+        faces = self.map.render()
 
-            for (x, y, z) in face:
+        for i in range(len(faces)):
+
+            face = []
+
+            for (x, y, z) in faces[i]:
 
                 # (x, y, z) = self.points[pointId]
 
@@ -106,24 +115,26 @@ class Engine:
                 (x, z) = utils.rotate2D(x, z, self.cam.yaw)
                 (y, z) = utils.rotate2D(y, z, self.cam.pitch)
 
-                if z <= 0:
-                    break
+                if z > 0:
+                    face.append((x, y, z))
 
+            faces[i] = face
+
+        order = sorted(range(len(faces)), key=lambda i: utils.calculateDepth(faces[i]))
+
+        for i in order:
+            polygon = []
+
+            for (x, y, z) in faces[i]:
                 # Projection
                 f = (self.width / 2) / z
 
                 x = x * f + (self.width / 2)
                 y = - y * f + (self.height / 2)
-                coords.append((x, y))
+                polygon += [x, y]
 
-            # print(coords)
-
-            for i in range(len(coords)):
-
-                if i + 1 < len(coords):
-                    self.canvas.create_line(coords[i] + coords[i + 1])
-                else:
-                    self.canvas.create_line(coords[i] + coords[0])
+            if len(polygon) > 0:
+                self.canvas.create_polygon(polygon, outline='white', fill='black')
 
     def onKeyPress(self, e):
 

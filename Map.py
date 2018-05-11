@@ -8,13 +8,11 @@ class Map:
 
         for i in range(5):
             for j in range(5):
-                for k in range(1):
+                for k in range(2):
                     self.objects.append(Pyramid(i, j , k, 1))
         self.results = []
 
     def render(self):
-        if self.results:
-            return self.results
 
         faces = []
         for i in self.objects:
