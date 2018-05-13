@@ -18,6 +18,8 @@ class Cube:
         ]
 
         return [
+            [points[2], points[3], points[7], points[6]],
+            [points[0], points[1], points[5], points[4]],
             [points[0], points[1], points[3], points[2]],
             [points[4], points[5], points[7], points[6]],
             [points[3], points[7], points[5], points[1]],

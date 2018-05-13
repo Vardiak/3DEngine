@@ -65,38 +65,9 @@ class Engine:
         self.canvas.delete('all')
         # self.canvas.
 
-        # Handle keyboard input
-        if (self.cam.zPressed):
-            self.cam.z += 0.05 * math.cos(self.cam.yaw)
-            self.cam.x += 0.05 * math.sin(self.cam.yaw)
-            # Uncomment for 3D orientation
-            # self.cam.z += 0.05 * math.cos(self.cam.yaw) * math.cos(self.cam.pitch)
-            # self.cam.x += 0.05 * math.sin(self.cam.yaw) * math.cos(self.cam.pitch)
-            # self.cam.y += 0.05 * math.sin(self.cam.pitch)
+        self.updatePosition()
 
-        if (self.cam.qPressed):
-            self.cam.x -= 0.05 * math.cos(self.cam.yaw)
-            self.cam.z += 0.05 * math.sin(self.cam.yaw)
-
-        if (self.cam.sPressed):
-            self.cam.z -= 0.05 * math.cos(self.cam.yaw)
-            self.cam.x -= 0.05 * math.sin(self.cam.yaw)
-
-        if (self.cam.dPressed):
-            self.cam.x += 0.05 * math.cos(self.cam.yaw)
-            self.cam.z -= 0.05 * math.sin(self.cam.yaw)
-
-        if (self.cam.upPressed):
-            self.cam.pitch += 0.015
-        if (self.cam.downPressed):
-            self.cam.pitch -= 0.015
-        if (self.cam.leftPressed):
-            self.cam.yaw -= 0.015
-        if (self.cam.rightPressed):
-            self.cam.yaw += 0.015
-
-
-        faces = self.map.render()
+        faces = list(self.map.render())
 
         for i in range(len(faces)):
 
@@ -120,12 +91,12 @@ class Engine:
 
             faces[i] = face
 
-        order = sorted(range(len(faces)), key=lambda i: utils.calculateDepth(faces[i]))
+        faces = sorted(faces, key=utils.calculateDepth)
 
-        for i in order:
+        for face in faces:
             polygon = []
 
-            for (x, y, z) in faces[i]:
+            for (x, y, z) in face:
                 # Projection
                 f = (self.width / 2) / z
 
@@ -178,3 +149,34 @@ class Engine:
             self.cam.leftPressed = False
         elif (e.keycode == 39):
             self.cam.rightPressed = False
+
+    def updatePosition(self):
+        # Handle keyboard input
+        if (self.cam.zPressed):
+            self.cam.z += 0.05 * math.cos(self.cam.yaw)
+            self.cam.x += 0.05 * math.sin(self.cam.yaw)
+            # Uncomment for 3D orientation
+            # self.cam.z += 0.05 * math.cos(self.cam.yaw) * math.cos(self.cam.pitch)
+            # self.cam.x += 0.05 * math.sin(self.cam.yaw) * math.cos(self.cam.pitch)
+            # self.cam.y += 0.05 * math.sin(self.cam.pitch)
+
+        if (self.cam.qPressed):
+            self.cam.x -= 0.05 * math.cos(self.cam.yaw)
+            self.cam.z += 0.05 * math.sin(self.cam.yaw)
+
+        if (self.cam.sPressed):
+            self.cam.z -= 0.05 * math.cos(self.cam.yaw)
+            self.cam.x -= 0.05 * math.sin(self.cam.yaw)
+
+        if (self.cam.dPressed):
+            self.cam.x += 0.05 * math.cos(self.cam.yaw)
+            self.cam.z -= 0.05 * math.sin(self.cam.yaw)
+
+        if (self.cam.upPressed):
+            self.cam.pitch += 0.015
+        if (self.cam.downPressed):
+            self.cam.pitch -= 0.015
+        if (self.cam.leftPressed):
+            self.cam.yaw -= 0.015
+        if (self.cam.rightPressed):
+            self.cam.yaw += 0.015
