@@ -6,8 +6,8 @@ class Map:
     def __init__(self):
         self.objects = []
 
-        for i in range(5):
-            for j in range(5):
+        for i in range(3):
+            for j in range(3):
                 for k in range(2):
                     self.objects.append(Pyramid(i, j , k, 1))
         self.results = []

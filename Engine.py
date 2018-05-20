@@ -86,11 +86,11 @@ class Engine:
                 (x, z) = utils.rotate2D(x, z, self.cam.yaw)
                 (y, z) = utils.rotate2D(y, z, self.cam.pitch)
 
-                if z > 0:
-                    face.append((x, y, z))
+                face.append((x, y, z))
 
             faces[i] = face
 
+        faces = [utils.clip(face) for face in faces]
         faces = sorted(faces, key=utils.calculateDepth)
 
         for face in faces:
@@ -98,6 +98,8 @@ class Engine:
 
             for (x, y, z) in face:
                 # Projection
+                if z == 0:
+                    print(face)
                 f = (self.width / 2) / z
 
                 x = x * f + (self.width / 2)
