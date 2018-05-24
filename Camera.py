@@ -3,8 +3,8 @@ import math
 class Camera:
     x = 0
     y = 2
-    z = -5
-    yaw = math.pi / 4
+    z = -10
+    yaw = 0
     pitch = 0
     zPressed = False
     qPressed = False

@@ -22,63 +22,64 @@ def calculateDepth(face):
     return - total / len(face)
 
 def clip(face):
-    
-    new = []
 
-    # Find start of exit
     out = -1
+    enter = -1
+
     for i in range(len(face)):
         (x, y, z) = face[i]
+        (xa, ya, za) = face[(i - 1) % len(face)]
+        (xb, yb, zb) = face[(i + 1) % len(face)]
 
-        if z < 0 and (i != 0 or face[len(face) - 1][2] >= 0):
-            out = i
-            break
+        if z < 0.01:
+            if za >= 0.01:
+                out = i
 
-    # If there is a point out, find the enter point
-    if out != -1:
-        enter = -1
-
-        for i in list(range(out, len(face))) + list(range(0, out)):
-            if (face[(i + 1) % len(face)][2] > 0):
+            if zb >= 0.01:
                 enter = i
+    
+    if out > -1 and enter > -1:
+        
+        #Calculate intersections points before and after.
+        (xa, ya, za) = face[(out - 1) % len(face)]
+        (xb, yb, zb) = face[out]
+
+        za += 0.01
+        zb += 0.01
+
+        a = (
+            xa - ((za * (xb - xa)) / (zb - za)),
+            ya - ((za * (yb - ya)) / (zb - za)),
+            0.01
+        )
+
+        (xa, ya, za) = face[(enter + 1) % len(face)]
+        (xb, yb, zb) = face[enter]
+
+        za += 0.01
+        zb += 0.01
+
+        b = (
+            xa - ((za * (xb - xa)) / (zb - za)),
+            ya - ((za * (yb - ya)) / (zb - za)),
+            0.01
+        )
+
+        #Reconstruct face with order
+        new = [a, b]
+        i = enter
+        while (True):
+            i = (i + 1) % len(face)
+            if i == out:
                 break
-
-        # If there is no point in, start clipping
-        if enter != -1:
-
-            #Calculate intersections points before and after.
-            (xa, ya, za) = face[(out - 1) % len(face)]
-            (xb, yb, zb) = face[out]
-
-
-            a = (
-                xa - za * (xb - xa) / (zb - za),
-                ya - za * (yb - ya) / (zb - za),
-                0.01
-            )
-
-            (xa, ya, za) = face[(enter + 1) % len(face)]
-            (xb, yb, zb) = face[enter]
-
-            b = (
-                xa - za * (xb - xa) / (zb - za),
-                ya - za * (yb - ya) / (zb - za),
-                0.01
-            )
-
-            #Reconstruct face with order
-            i = (enter + 1) % len(face)
-            while (True):
+            else:
                 new.append(face[i])
-                i = (i + 1) % len(face)
-                if i == out:
-                    break
-            new += [a, b]
 
-            return new
+        return new
+    else:
+        if face[0][2] > 0.01:
+            return face
         else:
             return []
-    else:
-        return face
                 
 

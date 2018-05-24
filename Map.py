@@ -6,10 +6,15 @@ class Map:
     def __init__(self):
         self.objects = []
 
-        for i in range(3):
-            for j in range(3):
-                for k in range(2):
-                    self.objects.append(Pyramid(i, j , k, 1))
+        # for i in range(3):
+        #     for j in range(3):
+        #         for k in range(2):
+        #             self.objects.append(Pyramid(i, j , k, 1))
+        for i in range(-5, 5):
+            for j in range(-5, 5):
+                self.objects.append(Pyramid(i, 0, j, 1))
+        # self.objects.append(Pyramid(0, 0, 0, 20))²
+        self.objects.append(Cube(0, 0, 0, 1))
         self.results = []
 
     def render(self):

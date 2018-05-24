@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
  
 import tkinter
-import msvcrt
 import time
-import threading
 import math
+#import random
 import utils
+
 from Map import Map
 from Camera import Camera
 
@@ -44,6 +44,9 @@ class Engine:
             # Display frames
             self.root.update()
 
+            #Calculate movement
+            self.updatePosition()
+
             # Render next frame
             self.render()
             self.canvas.create_text(10, 10, anchor=tkinter.NW, font="Roboto\ Mono 20", text=str(fps) + " FPS")
@@ -63,9 +66,6 @@ class Engine:
 
     def render(self):
         self.canvas.delete('all')
-        # self.canvas.
-
-        self.updatePosition()
 
         faces = list(self.map.render())
 
@@ -74,8 +74,6 @@ class Engine:
             face = []
 
             for (x, y, z) in faces[i]:
-
-                # (x, y, z) = self.points[pointId]
 
                 # Camera position
                 x -= self.cam.x
@@ -90,24 +88,33 @@ class Engine:
 
             faces[i] = face
 
+        #Face clipping
         faces = [utils.clip(face) for face in faces]
+
+        #Face sorting
         faces = sorted(faces, key=utils.calculateDepth)
 
+        #Face display
         for face in faces:
-            polygon = []
 
-            for (x, y, z) in face:
-                # Projection
-                if z == 0:
-                    print(face)
-                f = (self.width / 2) / z
+            if len(face) > 0:
+                polygon = []
 
-                x = x * f + (self.width / 2)
-                y = - y * f + (self.height / 2)
-                polygon += [x, y]
+                for (x, y, z) in face:
+                    # Projection
+                    f = (self.width / 2) / z
 
-            if len(polygon) > 0:
-                self.canvas.create_polygon(polygon, outline='white', fill='black')
+                    x = x * f + (self.width / 2)
+                    y = - y * f + (self.height / 2)
+                    polygon += [x, y]
+                    
+
+                # de = ("%02x"%random.randint(0,255))
+                # re = ("%02x"%random.randint(0,255))
+                # we = ("%02x"%random.randint(0,255))
+                # color= "#" + de + re + we
+                color = "black"
+                self.canvas.create_polygon(polygon, outline='white', fill=color)
 
     def onKeyPress(self, e):
 
@@ -169,6 +176,10 @@ class Engine:
         if (self.cam.sPressed):
             self.cam.z -= 0.05 * math.cos(self.cam.yaw)
             self.cam.x -= 0.05 * math.sin(self.cam.yaw)
+            # Uncomment for 3D orientation
+            # self.cam.z -= 0.05 * math.cos(self.cam.yaw) * math.cos(self.cam.pitch)
+            # self.cam.x -= 0.05 * math.sin(self.cam.yaw) * math.cos(self.cam.pitch)
+            # self.cam.y -= 0.05 * math.sin(self.cam.pitch)
 
         if (self.cam.dPressed):
             self.cam.x += 0.05 * math.cos(self.cam.yaw)
