@@ -16,9 +16,9 @@ class Pyramid:
         ]
 
         return [
-            # [points[0], points[1], points[2]],
-            # [points[3], points[4], points[2]],
+            [points[0], points[1], points[2]],
+            [points[3], points[4], points[2]],
             [points[1], points[4], points[3], points[0]],
-            # [points[0], points[2], points[3]],
-            # [points[2], points[4], points[1]], 
+            [points[0], points[2], points[3]],
+            [points[2], points[4], points[1]], 
         ]
