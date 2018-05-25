@@ -1,5 +1,8 @@
 from Cube import Cube
 from Pyramid import Pyramid
+from Floor imoprt Floor 
+from Slope import Slope
+from Stairs import Stairs
 
 class Map:
 
@@ -12,7 +15,7 @@ class Map:
         #             self.objects.append(Pyramid(i, j , k, 1))
         for i in range(-5, 5):
             for j in range(-5, 5):
-                self.objects.append(Pyramid(i, 0, j, 1))
+                self.objects.append(Floor(i, 0, j, 1))
         # self.objects.append(Pyramid(0, 0, 0, 20))²
         self.objects.append(Cube(0, 0, 0, 1))
         self.results = []
