@@ -67,7 +67,8 @@ class Engine:
     def render(self):
         self.canvas.delete('all')
 
-        faces = list(self.map.render())
+        (faces, colors) = self.map.render()
+        faces, colors = list(faces), list(colors)
 
         for i in range(len(faces)):
 
@@ -92,10 +93,11 @@ class Engine:
         faces = [utils.clip(face) for face in faces]
 
         #Face sorting
-        faces = sorted(faces, key=utils.calculateDepth)
+        order = sorted(range(len(faces)), key=lambda i: utils.calculateDepth(faces[i]))
 
         #Face display
-        for face in faces:
+        for i in order:
+            face = faces[i]
 
             if len(face) > 0:
                 polygon = []
@@ -113,8 +115,7 @@ class Engine:
                 # re = ("%02x"%random.randint(0,255))
                 # we = ("%02x"%random.randint(0,255))
                 # color= "#" + de + re + we
-                color = "black"
-                self.canvas.create_polygon(polygon, outline='white', fill=color)
+                self.canvas.create_polygon(polygon, outline='white', fill=colors[i])
 
     def onKeyPress(self, e):
 

@@ -1,11 +1,13 @@
 class Stairs:
 
-    def __init__(self, x, y, z, size):
+    def __init__(self, x, y, z, size, color):
         self.pos = (x, y, z)
         self.size = size
+        self.color = color
 
     def render(self):
         (x, y, z) = self.pos
+
         points = [
             (x, y, z),
             (x, y, z + self.size),
@@ -21,7 +23,7 @@ class Stairs:
             (x + self.size, y + self.size/2, z + self.size/2),
         ]
 
-        return [
+        faces = [
             [points[2], points[10], points[11], points[6]],
             [points[0], points[1], points[5], points[4]],
             [points[0], points[1], points[3], points[8], points[10], points [2]],
@@ -31,3 +33,7 @@ class Stairs:
             [points[0], points[2], points[6], points[4]],
             [points[10], points[11], points[9], points[8]],
         ]
+
+        colors = [self.color for i in range(8)]
+
+        return (faces, colors)

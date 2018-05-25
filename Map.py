@@ -1,6 +1,6 @@
 from Cube import Cube
 from Pyramid import Pyramid
-from Floor imoprt Floor 
+from Floor import Floor 
 from Slope import Slope
 from Stairs import Stairs
 
@@ -9,30 +9,35 @@ class Map:
     def __init__(self):
         self.objects = []
 
-        # for i in range(3):
-        #     for j in range(3):
-        #         for k in range(2):
-        #             self.objects.append(Pyramid(i, j , k, 1))
-        for i in range(-5, 5):
+        self.faces = []
+        self.colors = []
+
+        for i in range(-5, 6):
             for j in range(-5, 5):
-                self.objects.append(Floor(i, 0, j, 1))
-        # self.objects.append(Pyramid(0, 0, 0, 20))²
-        self.objects.append(Cube(0, 0, 0, 1))
-        self.results = []
+                self.objects.append(Floor(i, 0, j, 1, 'black'))
+
+        self.objects.append(Cube(-3, 0, 0, 1, 'pink'))
+        self.objects.append(Slope(-1, 0, 0, 1, 'purple'))
+        self.objects.append(Stairs(1, 0, 0, 1, 'green'))
+        self.objects.append(Pyramid(3, 0, 0, 1, 'red'))
 
     def render(self):
 
-        if len(self.results) > 0:
-            return self.results
+        if len(self.faces) > 0:
+            return (self.faces, self.colors)
 
         faces = []
-        for i in self.objects:
-            faces += i.render()
+        colors = []
+        for obj in self.objects:
+            (f, c) = obj.render()
+            faces += f
+            colors += c
 
-        # little hack to remove duplicate faces (~20% performance improvement)
-        faces = [tuple(face) for face in faces]
-        faces = list(set(faces))
-        faces = [list(face) for face in faces]
+        # # little hack to remove duplicate faces (~20% performance improvement)
+        # faces = [tuple(face) for face in faces]
+        # faces = list(set(faces))
+        # faces = [list(face) for face in faces]
 
-        self.results = faces
-        return faces
+        self.faces = faces
+        self.colors = colors
+        return (faces, colors)

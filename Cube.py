@@ -1,8 +1,9 @@
 class Cube:
 
-    def __init__(self, x, y, z, size):
+    def __init__(self, x, y, z, size, color):
         self.pos = (x, y, z)
         self.size = size
+        self.color = color
 
     def render(self):
         (x, y, z) = self.pos
@@ -17,7 +18,7 @@ class Cube:
             (x + self.size, y + self.size, z + self.size),
         ]
 
-        return [
+        faces = [
             [points[2], points[3], points[7], points[6]],
             [points[0], points[1], points[5], points[4]],
             [points[0], points[1], points[3], points[2]],
@@ -25,3 +26,7 @@ class Cube:
             [points[3], points[7], points[5], points[1]],
             [points[0], points[2], points[6], points[4]]
         ]
+
+        colors = [self.color for i in range(6)]
+
+        return (faces, colors)
