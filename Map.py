@@ -1,5 +1,6 @@
 from Cube import Cube
 from Pyramid import Pyramid
+from FallingPyramid import FallingPyramid
 from Floor import Floor 
 from Slope import Slope
 from Stairs import Stairs
@@ -19,12 +20,13 @@ class Map:
         self.objects.append(Cube(-3, 0, 0, 1, 'pink'))
         self.objects.append(Slope(-1, 0, 0, 1, 'purple'))
         self.objects.append(Stairs(1, 0, 0, 1, 'green'))
-        self.objects.append(Pyramid(3, 0, 0, 1, 'red'))
+        self.objects.append(FallingPyramid(3, 20, 0, 1, 'red'))
 
     def render(self):
 
-        if len(self.faces) > 0:
-            return (self.faces, self.colors)
+        # Need to be disabled if using falling objects
+        # if len(self.faces) > 0:
+        #     return (self.faces, self.colors)
 
         faces = []
         colors = []
