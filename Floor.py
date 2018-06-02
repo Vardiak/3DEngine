@@ -1,3 +1,7 @@
+'''
+Simple floor model
+'''
+
 class Floor:
 
     def __init__(self, x, y, z, size, color):

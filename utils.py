@@ -1,5 +1,8 @@
 import math
 
+'''
+Function that rotate a 2D point around (0, 0) 
+'''
 def rotate2D(x, y, rad):
     s = math.sin(rad)
     c = math.cos(rad)
@@ -9,6 +12,10 @@ def rotate2D(x, y, rad):
         (y * c) + (x * s)
     )
 
+
+'''
+Function that returns the average distance of a face from (0, 0, 0)
+'''
 def calculateDepth(face):
 
     if len(face) == 0:
@@ -21,11 +28,16 @@ def calculateDepth(face):
     
     return - total / len(face)
 
+
+'''
+Function that replace all points with z < 0
+'''
 def clip(face):
 
     out = -1
     enter = -1
 
+    #Find the enter and the exit point
     for i in range(len(face)):
         (x, y, z) = face[i]
         (xa, ya, za) = face[(i - 1) % len(face)]

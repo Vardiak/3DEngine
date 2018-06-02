@@ -1,5 +1,8 @@
 import math
 
+'''
+Class that hold all user informations and input, like position and pressed keys.
+'''
 class Camera:
     x = 0
     y = 2

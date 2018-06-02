@@ -1,3 +1,8 @@
+
+'''
+Pyramid model with some gravity stuff
+'''
+
 class FallingPyramid:
 
     def __init__(self, x, y, z, size, color):

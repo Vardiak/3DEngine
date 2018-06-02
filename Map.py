@@ -5,6 +5,10 @@ from Floor import Floor
 from Slope import Slope
 from Stairs import Stairs
 
+'''
+Class that hold all the map data, built from other models
+'''
+
 class Map:
 
     def __init__(self):

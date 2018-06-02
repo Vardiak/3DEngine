@@ -1,3 +1,8 @@
+
+'''
+Cube model with some gravity stuff
+'''
+
 class FallingCube:
 
     def __init__(self, x, y, z, size, color):

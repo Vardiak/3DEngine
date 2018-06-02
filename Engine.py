@@ -4,12 +4,14 @@
 import tkinter
 import time
 import math
-#import random
 import utils
 
 from Map import Map
 from Camera import Camera
 
+'''
+Main class, used to instanciate a window.
+'''
 
 class Engine:
 

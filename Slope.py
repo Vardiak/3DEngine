@@ -1,3 +1,8 @@
+
+'''
+Slope model
+'''
+
 class Slope:
 
     def __init__(self, x, y, z, size, color):

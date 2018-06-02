@@ -1,3 +1,7 @@
+'''
+Stairs model
+'''
+
 class Stairs:
 
     def __init__(self, x, y, z, size, color):
