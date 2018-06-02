@@ -31,7 +31,7 @@ class FallingCube:
             (x + self.size, y + self.size, z + self.size),
         ]
 
-        return [
+        faces = [
             [points[2], points[3], points[7], points[6]],
             [points[0], points[1], points[5], points[4]],
             [points[0], points[1], points[3], points[2]],
@@ -40,6 +40,6 @@ class FallingCube:
             [points[0], points[2], points[6], points[4]]
         ]
 
-        colors = [self.color for i in range(5)]
+        colors = [self.color for i in range(6)]
 
         return (faces, colors)
