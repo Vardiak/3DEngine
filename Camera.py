@@ -7,6 +7,7 @@ class Camera:
     x = 0
     y = 2
     z = -10
+    frameCount = 0
     yaw = 0
     pitch = 0
     zPressed = False
@@ -17,3 +18,5 @@ class Camera:
     downPressed = False
     leftPressed = False
     rightPressed = False
+
+cam = Camera()

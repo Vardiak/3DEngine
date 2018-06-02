@@ -1,4 +1,5 @@
 from Cube import Cube
+from FallingCube import FallingCube
 from Pyramid import Pyramid
 from FallingPyramid import FallingPyramid
 from Floor import Floor 
@@ -39,7 +40,7 @@ class Map:
             faces += f
             colors += c
 
-        # # little hack to remove duplicate faces (~20% performance improvement)
+        # little hack to remove duplicate faces (~20% performance improvement), incompatible with colors
         # faces = [tuple(face) for face in faces]
         # faces = list(set(faces))
         # faces = [list(face) for face in faces]

@@ -1,4 +1,6 @@
 
+from Camera import cam
+
 '''
 Pyramid model with some gravity stuff
 '''
@@ -9,16 +11,18 @@ class FallingPyramid:
         self.pos = (x, y, z)
         self.size = size
         self.color = color
-        self.frameCount = 0
 
     def render(self):
         (x, y, z) = self.pos
-        if y > 0 and self.frameCount > 600:
-            y -= 30 * (self.frameCount - 600) / 60**2
-        elif y < 0:
+
+        g = 20
+        t = cam.frameCount / 60 - 5
+
+        if t > 0:
+            y = - g * (t**2) / 2 + y
+
+        if y < 0:
             y = 0
-        self.frameCount += 1
-        self.pos = (x, y, z)
 
         points = [
             (x, y, z),

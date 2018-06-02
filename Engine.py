@@ -7,7 +7,7 @@ import math
 import utils
 
 from Map import Map
-from Camera import Camera
+from Camera import cam
 
 '''
 Main class, used to instanciate a window.
@@ -19,7 +19,6 @@ class Engine:
         self.width = width
         self.height = height
         self.targetFPS = FPS
-        self.cam = Camera()
 
         self.root = tkinter.Tk()
         self.canvas = tkinter.Canvas(self.root, width=width, height=height, background='white')
@@ -37,7 +36,6 @@ class Engine:
 
         cycleStart = time.clock()
         fps = self.targetFPS
-        frameCount = 0
 
         while True:
             
@@ -59,9 +57,8 @@ class Engine:
             if (nextFrame > 0): time.sleep(nextFrame)
 
             # Update refresh counter
-            frameCount += 1
-            if (frameCount == self.targetFPS):
-                frameCount = 0
+            cam.frameCount += 1
+            if (cam.frameCount % self.targetFPS == 0):
                 fps = round(self.targetFPS / (time.clock() - cycleStart), 2)
                 cycleStart = time.clock()
 
@@ -79,13 +76,13 @@ class Engine:
             for (x, y, z) in faces[i]:
 
                 # Camera position
-                x -= self.cam.x
-                y -= self.cam.y
-                z -= self.cam.z
+                x -= cam.x
+                y -= cam.y
+                z -= cam.z
 
                 # Camera rotation
-                (x, z) = utils.rotate2D(x, z, self.cam.yaw)
-                (y, z) = utils.rotate2D(y, z, self.cam.pitch)
+                (x, z) = utils.rotate2D(x, z, cam.yaw)
+                (y, z) = utils.rotate2D(y, z, cam.pitch)
 
                 face.append((x, y, z))
 
@@ -122,77 +119,77 @@ class Engine:
     def onKeyPress(self, e):
 
         if (e.keycode == 90):
-            self.cam.zPressed = True
+            cam.zPressed = True
         elif (e.keycode == 81):
-            self.cam.qPressed = True
+            cam.qPressed = True
         elif (e.keycode == 83):
-            self.cam.sPressed = True
+            cam.sPressed = True
         elif (e.keycode == 68):
-            self.cam.dPressed = True
+            cam.dPressed = True
         elif (e.keycode == 38):
-            self.cam.upPressed = True
+            cam.upPressed = True
         elif (e.keycode == 40):
-            self.cam.downPressed = True
+            cam.downPressed = True
         elif (e.keycode == 37):
-            self.cam.leftPressed = True
+            cam.leftPressed = True
         elif (e.keycode == 39):
-            self.cam.rightPressed = True
+            cam.rightPressed = True
 
         elif (e.keycode == 32):
-            self.cam.y += .3
+            cam.y += .3
         elif (e.keycode == 16):
-            self.cam.y -= .3
+            cam.y -= .3
 
     def onKeyRelease(self, e):
 
         if (e.keycode == 90):
-            self.cam.zPressed = False
+            cam.zPressed = False
         elif (e.keycode == 81):
-            self.cam.qPressed = False
+            cam.qPressed = False
         elif (e.keycode == 83):
-            self.cam.sPressed = False
+            cam.sPressed = False
         elif (e.keycode == 68):
-            self.cam.dPressed = False
+            cam.dPressed = False
         elif (e.keycode == 38):
-            self.cam.upPressed = False
+            cam.upPressed = False
         elif (e.keycode == 40):
-            self.cam.downPressed = False
+            cam.downPressed = False
         elif (e.keycode == 37):
-            self.cam.leftPressed = False
+            cam.leftPressed = False
         elif (e.keycode == 39):
-            self.cam.rightPressed = False
+            cam.rightPressed = False
 
     def updatePosition(self):
         # Handle keyboard input
-        if (self.cam.zPressed):
-            self.cam.z += 0.05 * math.cos(self.cam.yaw)
-            self.cam.x += 0.05 * math.sin(self.cam.yaw)
+        if (cam.zPressed):
+            cam.z += 0.05 * math.cos(cam.yaw)
+            cam.x += 0.05 * math.sin(cam.yaw)
             # Uncomment for 3D orientation
-            # self.cam.z += 0.05 * math.cos(self.cam.yaw) * math.cos(self.cam.pitch)
-            # self.cam.x += 0.05 * math.sin(self.cam.yaw) * math.cos(self.cam.pitch)
-            # self.cam.y += 0.05 * math.sin(self.cam.pitch)
+            # cam.z += 0.05 * math.cos(cam.yaw) * math.cos(cam.pitch)
+            # cam.x += 0.05 * math.sin(cam.yaw) * math.cos(cam.pitch)
+            # cam.y += 0.05 * math.sin(cam.pitch)
 
-        if (self.cam.qPressed):
-            self.cam.x -= 0.05 * math.cos(self.cam.yaw)
-            self.cam.z += 0.05 * math.sin(self.cam.yaw)
+        if (cam.qPressed):
+            cam.x -= 0.05 * math.cos(cam.yaw)
+            cam.z += 0.05 * math.sin(cam.yaw)
 
-        if (self.cam.sPressed):
-            self.cam.z -= 0.05 * math.cos(self.cam.yaw)
-            self.cam.x -= 0.05 * math.sin(self.cam.yaw)
+        if (cam.sPressed):
+            cam.z -= 0.05 * math.cos(cam.yaw)
+            cam.x -= 0.05 * math.sin(cam.yaw)
             # Uncomment for 3D orientation
-            # self.cam.z -= 0.05 * math.cos(self.cam.yaw) * math.cos(self.cam.pitch)
-            # self.cam.x -= 0.05 * math.sin(self.cam.yaw) * math.cos(self.cam.pitch)
-            # self.cam.y -= 0.05 * math.sin(self.cam.pitch)
+            # cam.z -= 0.05 * math.cos(cam.yaw) * math.cos(cam.pitch)
+            # cam.x -= 0.05 * math.sin(cam.yaw) * math.cos(cam.pitch)
+            # cam.y -= 0.05 * math.sin(cam.pitch)
 
-        if (self.cam.dPressed):
-            self.cam.x += 0.05 * math.cos(self.cam.yaw)
-            self.cam.z -= 0.05 * math.sin(self.cam.yaw)
+        if (cam.dPressed):
+            cam.x += 0.05 * math.cos(cam.yaw)
+            cam.z -= 0.05 * math.sin(cam.yaw)
 
-        if (self.cam.upPressed):
-            self.cam.pitch += 0.015
-        if (self.cam.downPressed):
-            self.cam.pitch -= 0.015
-        if (self.cam.leftPressed):
-            self.cam.yaw -= 0.015
-        if (self.cam.rightPressed):
-            self.cam.yaw += 0.015
+        if (cam.upPressed):
+            cam.pitch += 0.015
+        if (cam.downPressed):
+            cam.pitch -= 0.015
+        if (cam.leftPressed):
+            cam.yaw -= 0.015
+        if (cam.rightPressed):
+            cam.yaw += 0.015
