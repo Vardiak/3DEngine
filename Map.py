@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from Cube import Cube
 from FallingCube import FallingCube
 from Pyramid import Pyramid

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import math
 
 '''
@@ -30,7 +33,7 @@ def calculateDepth(face):
 
 
 '''
-Function that replace all points with z < 0
+Function clip all points with z < 0
 '''
 def clip(face):
 
